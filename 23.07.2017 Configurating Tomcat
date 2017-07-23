@@ -1,0 +1,9 @@
+http://javastudy.ru/jsf-2/description-settings-web-xml-with-spring/ - web.xml setup
+https://rtfm.co.ua/tomcat-podklyuchenie-vneshnego-fajla-v-konfiguraciyu-server-xml/ - server.xml setup
+https://javatalks.ru/topics/28501 - url pattern setup(web.xml)
+https://docs.oracle.com/cd/E19798-01/821-1841/gjjcd/index.html security-constraints(url pattern) explain in web.xml
+https://docs.oracle.com/cd/E19798-01/821-1841/bncbk/index.html security-constraints
+http://tomcat.apache.org/tomcat-7.0-doc/config/valve.html#Remote_Address_Filter apache tomcat setting up
+http://www.4stud.info/networking/work10.html apache tomcat setting up
+http://www.sql.ru/forum/707877/nastroyka-dostupa-ili-izmenenie-raspolozheniya-faylov-v-veb-proekte settings for tomcat
+http://onedeveloper.ru/article?id=5 web.xml (explained how to set up)
