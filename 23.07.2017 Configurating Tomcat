@@ -8,3 +8,11 @@ http://www.4stud.info/networking/work10.html apache tomcat setting up
 http://www.sql.ru/forum/707877/nastroyka-dostupa-ili-izmenenie-raspolozheniya-faylov-v-veb-proekte settings for tomcat
 http://onedeveloper.ru/article?id=5 web.xml (explained how to set up)
 https://javatalks.ru/topics/2763 settings
+
+
+<security-constraint>
+        <web-resource-collection>
+            <web-resource-name></web-resource-name>
+            <url-pattern>WEB-INF</url-pattern>
+        </web-resource-collection>
+</security-constraint>  - this part of web.xml file makes inner folder that is invisible from network but is seen from servlet
