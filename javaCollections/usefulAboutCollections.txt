@@ -1,0 +1,11 @@
+//But into the second went the high priest alone once every year, not without blood, which he offered for himself,
+//and for the errors of the people (Hebrews 9:7)
+
+https://www.javatpoint.com/collections-in-java    - this should be read
+http://docs.oracle.com/javase/tutorial/collections/
+http://www.tutorialspoint.com/java/java_collections.htm
+http://tutorials.jenkov.com/java-collections/sorting.html
+
+
+http://javarevisited.blogspot.in/2011/05/example-of-arraylist-in-java-tutorial.html - ArrayLists
+
