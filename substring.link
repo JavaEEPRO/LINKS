@@ -1,0 +1,253 @@
+
+// Grace be unto you, and peace, from God our Father, and from the Lord Jesus Christ. (1Cor 1:3)
+
+https://www.programcreek.com/2013/09/the-substring-method-in-jdk-6-and-jdk-7/
+
+
+
+
+/*
+The substring() Method in JDK 6 and JDK 7
+ 
+The implementation of the substring(int beginIndex, int endIndex) method in JDK 6 is different from JDK 7. This post explains the differences. For simplicity reasons, the substring() method represents the substring(int beginIndex, int endIndex) method in this post.
+
+
+1. What substring() does?
+
+The substring(int beginIndex, int endIndex) method returns a string that starts with beginIndex and ends with endIndex-1.
+
+String x = "abcdef";
+x = x.substring(1,3);
+System.out.println(x);
+Output:
+
+bc
+2. What happens when substring() is called?
+
+You may know that because x is immutable, when x is assigned with the result of x.substring(1,3), it points to a new string like the following:
+
+string-immutability
+
+However, this diagram is not exactly right. What exactly happens when substring() is called is different between JDK 6 and JDK 7.
+
+3. substring() in JDK 6
+
+String is supported by a char array in the back-end. In JDK 6, the String class contains 3 fields: char value[], int offset, int count. They are used to store real character array, the first index of the array, the number of characters in the String.
+
+When the substring() method is called, it creates a new string, but the string's value still points to the same array in the heap. The difference between the two Strings is their count and offset values.
+
+string-substring-jdk6
+
+The following code is simplified and only contains the key point for explain this problem.
+
+//JDK 6
+String(int offset, int count, char value[]) {
+	this.value = value;
+	this.offset = offset;
+	this.count = count;
+}
+ 
+public String substring(int beginIndex, int endIndex) {
+	//check boundary
+	return  new String(offset + beginIndex, endIndex - beginIndex, value);
+}
+4. A problem caused by substring() in JDK 6
+
+If you have a VERY long string, but you only need a small part each time by using substring(). This will cause a performance problem since you need only a small part, you keep the whole thing. For JDK 6, the solution is using the following, which will make it point to a real substring:
+
+x = x.substring(x, y) + ""
+5. substring() in JDK 7
+
+This is improved in JDK 7. In JDK 7, the substring() method actually create a new array in the heap.
+
+string-substring-jdk7
+
+//JDK 7
+public String(char value[], int offset, int count) {
+	//check boundary
+	this.value = Arrays.copyOfRange(value, offset, offset + count);
+}
+ 
+public String substring(int beginIndex, int endIndex) {
+	//check boundary
+	int subLen = endIndex - beginIndex;
+	return new String(value, beginIndex, subLen);
+}
+Top 10 questions about Java String.
+
+References:
+1. Changes to substring
+2. Java 6 vs Java 7 when implementation matters
+
+Related Posts:
+Longest Substring with At Most K Distinct Characters
+LeetCode – Substring with Concatenation of All Words (Java)
+LeetCode – Minimum Window Substring (Java)
+LeetCode – Longest Substring with At Least K Repeating Characters (Java)
+
+ 
+Category >> Basics  
+If you want someone to read your code, please put the code inside <pre><code> and </code></pre> tags. For example: 
+<pre><code> 
+String foo = "bar";
+</code></pre>
+Peter Jerald on 2013-9-22
+Hi,
+
+Recently I heard that substring() method causes memory leak issues.
+
+http://bugs.sun.com/view_bug.do?bug_id=4513622
+
+whether this one resolved in new version of JDK?
+
+Added to this, another question
+
+As you said in the above article, In JDK 7 the substring method creates new object, so what will have happen to old string this will retain in memory?
+
+Thanks and Regards,
+Peter Jerald
+
+ryanlr on 2013-9-22
+Hi Peter,
+
+Thanks a lot for your comment. The memory leak problem caused by substring() in JDK 6 is solved in JDK 7, because new string will not point to the existing old character array.
+
+The old string(with old char array) will be garbage collected if there is no other references pointing to it.
+
+Thanks.
+
+Yuan.Ming on 2013-9-22
+Thanks………..
+
+ryanlr on 2013-9-22
+You are welcome:)
+
+skydiver on 2013-10-21
+Interesting, it seems that this was also incorporated in JDK 1.6 b14?
+
+public String(char value[], int offset, int count) {
+…..
+this.value = Arrays.copyOfRange(value, offset, offset+count);
+
+}
+
+Forest on 2013-10-22
+very good
+
+simple_plan on 2013-10-23
+wonderful
+
+Darkhogg on 2013-10-23
+x = x.substring(x, y) + “”
+
+Do *NOT* use that code. That line of code is equivalent to:
+
+StringBuilder sb = new StringBuilder();
+sb.append(x.substring(x, y));
+sb.append(“”);
+x = sb.toString();
+
+Instead, do:
+
+x = new String(x.substring(x, y));
+
+You save one object reference and a bit of time.
+
+I personally don’t like the new behaviour as it can be slow and waste memory in certain situations where the old behaviour did just fine.
+
+xiangxm on 2013-10-29
+The memory leak problem caused by substring() in JDK 6 is solved in JDK 7, because new string will not point to the existing old character array.？？why??
+
+xiangxm on 2013-10-29
+i just don’t understand that why “The memory leak problem caused by substring() in JDK 6 is solved in JDK 7 ” ?? 3Q
+
+Green on 2013-10-29
+very helpful for me ! thanks!
+
+Kim on 2013-11-27
+I agree with you. Once you knew about the jdk 6 implementation it was quite alright.
+
+naresh on 2013-12-11
+Imagine a situation where memory is very critical, once x is changed to hold, smaller array, i do not want to hold up memory and can garbage collect it. It will reduce memory leaks.
+
+liam on 2014-3-6
+In JDK6 the old char array is still referenced by the new String.So only the old String object would be be garbage collected.Not the old char array.
+
+Just as author said ,”If you have a VERY long string, but you only need a small part each time by using substring().”
+
+Terrible situation.
+
+c094728 on 2014-3-11
+It sounds too me like the JDK7 substring will be very bad for performance when you have a very long string (say > 20k) and you want to include most of it in the new string. Now it has to copy all of that data whereas in JDK6 it took no more time than creating a small substring of 2 characters since it keeps the reference to the original string and only adds pointers to the substring. Very inefficient to copy this data. Does trim() in JDK7 copy the entire string? For example if you are parsing a large XML file, substring is very efficient in JDK6 because the data is not moved, just split up into fields that refrence the original file.
+
+c094728 on 2014-3-11
+I didn’t believe you at first so looked at the source and you are quite right. There is code in constructor that makes a copy if the begin & end index don’t point at the full buffer.
+
+Chintan Mohan Rohila on 2014-3-15
+WRT to Oracle Java 7, the diagram describing String objects in Java 7 needs to be updated as ‘count’ and ‘offset’ are no longer String class attributes. However, IBM Java 7 still has old implementation of not making new copy of ‘value’ in substring object.
+
+智 陶 on 2014-3-28
+In jdk6，we also have the following code
+
+public String(String original) {
+
+int size = original.count;
+
+char[] originalValue = original.value;
+
+char[] v;
+
+if (originalValue.length > size) {
+
+// The array representing the String is bigger than the new
+
+// String itself. Perhaps this constructor is being called
+
+// in order to trim the baggage, so make a copy of the array.
+
+int off = original.offset;
+
+v = Arrays.copyOfRange(originalValue, off, off+size);
+
+} else {
+
+// The array representing the String is the same
+
+// size as the String, so no point in making a copy.
+
+v = originalValue;
+
+}
+
+this.offset = 0;
+
+this.count = size;
+
+this.value = v;
+
+}
+
+it also can solve in JDk6 and u can do it by intern() method too.
+correct me if i am wrong
+
+JavaGuy on 2014-11-15
+Very nice and easy to understand article 🙂
+Found another nice article that explains the memory leak possibility well in Java 6
+
+http://javaterritory.blogspot.com/2014/09/how-strings-substring-function-can.html
+
+roedygreen on 2014-11-20
+I would say “different” not “improved”. If you are plucking many small substrings from a big string that say represents file contents (my most common case) you will use more RAM with the JDK 7 method than with the JDK 6. If you need to keep the big string around JDK 6 is better. If you want to avoid pinning big string in RAM the JDK 7 method is better. I gather it would not have been practical to make it a compile time option since this decision is so pervasive.
+
+Stephen Boesch on 2015-4-12
+More common that substrings are repeatedly created from parent string. Thus jdk7 behavior is inferior.
+
+Stephen Boesch on 2015-4-12
+Yes. This new behavior in jdk7 is a significant backwards step.
+
+Stephen Boesch on 2015-4-12
+But with the JDK6 way there is a workaround – by explicitly creating a new string. With jdk7 there is NO way to retain the good performance /memory usage characteristics anymore. JDK7 approach is a serious regression.
+
+Stephen Boesch on 2016-3-31
+This is *NOT* an improvement. The substring having been immutable in jdk6 and earlier was a *core* building block for fast partial string manipulations. There is no fix to this in jdk7 or later: performance takes a (sometimes huge) hit.
+*/
