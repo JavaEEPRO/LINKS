@@ -1,0 +1,270 @@
+
+//Jesus said to her, "Mary." She turned and said to him, "Rabboni!" which is to say, "Teacher!" (John 20:16)
+
+
+
+https://www.youtube.com/watch?v=LI0DqBzNbEM&feature=youtu.be
+
+
+
+
+
+
+/*
+Уроки Java для начинающих | #17 - Анонимные классы и вложенные классы
+11 724 просмотра
+
+202
+
+7
+
+ПОДЕЛИТЬСЯ
+
+
+ 
+Гоша Дударь
+Опубликовано: 14 дек. 2016 г.
+ПОДПИСКА ОФОРМЛЕНА 185 ТЫС.
+ SUBSCRIBE SUBSCRIBED UNSUBSCRIBE
+
+Урок на сайте itProger: https://itproger.com/course/java/17
+
+В этом уроке мы изучим анонимные классы, а также рассмотрим что такое вложенные классы. Зачем они нужны и как ими пользоваться в языке Java
+
+✔ Основной сайт: https://itproger.com/
+
+✔ -------------
+Группа Вк - https://vk.com/prog_life
+Группа FaceBook - https://goo.gl/XW0aaP
+
+Я в Google+ - https://goo.gl/Tqt9W0
+Страничка Twitter - https://twitter.com/GoshaDudar
+Страничка Вк - https://vk.com/codi999
+
+✔ Начните зарабатывать на YouTube - http://join.air.io/money_air
+✔ Видео по заработку на YouTube - https://goo.gl/RLPXV8
+
+Помощь в развитии канала. 
+* Яндекс Деньги: 410014343706921
+
+* Кошельки WebMoney:
+- Доллар: Z331064341236
+- Гривна: U386388718252
+- Рубль: R214610220703
+ЕЩЁ
+22 комментария
+УПОРЯДОЧИТЬ
+ Natalie Gats
+Оставьте комментарий
+Lucky
+Lucky
+10 месяцев назад
+класно обясняешь!!!!!! всё четко!  можешь по C# обяснить про форму...windows form...пожалуйста!!!!!!﻿
+ОТВЕТИТЬ
+3
+
+
+
+Yar Alex
+Yar Alex
+2 месяца назад (изменено)
+Разве это вложенные классы? Это просто внутренние(inner) классы. Вложенные(nested) являются статическими﻿
+ОТВЕТИТЬ
+3
+
+
+
+Keyboard Landsknecht
+Keyboard Landsknecht
+2 месяца назад
+sout + Tab - шорткат для System.out.println.﻿
+ОТВЕТИТЬ
+3
+
+
+
+FractalEmanation
+FractalEmanation
+10 месяцев назад (изменено)
+Не выводиться анонимный класс.
+Вот код:
+        new Computer14()/Анонимный класс/ {
+            void superComp () {
+                this.i7.start();
+                this.transfer.start();
+            }
+        };
+До этого выводился вложенный класс поэтому в документе компьютер ошибок не было.﻿
+Читать дальше
+ОТВЕТИТЬ
+2
+
+
+
+Показать ответ
+ Ilyaaki
+Ilyaaki
+7 месяцев назад
+С анонимным классом на экран ничего не выведет﻿
+ОТВЕТИТЬ
+2
+
+
+
+Uriy Pugach
+Uriy Pugach
+2 месяца назад
+Но ведь, по существу создается не анонимный класс, а анонимный объект уже существующего класса. Разве не так?﻿
+ОТВЕТИТЬ
+2
+
+
+
+Показать ответ
+ Dastan Rustemov
+Dastan Rustemov
+3 недели назад
+transcend называется﻿
+ОТВЕТИТЬ
+
+
+
+Best of the best
+Best of the best
+2 месяца назад
+package javaapplication10;
+
+public class JavaApplication10 {
+
+    public static void main(String[] args) {
+      Computer comp = new Computer();
+      comp.ram.start(); //вот это хуйня не хочет работать
+      comp.i7.start();
+      
+    }
+    
+}
+другой класс
+
+package javaapplication10;
+
+public class Computer {
+    Proccessor i7 = new Proccessor();
+    class Proccessor {
+        private boolean isStart = false;
+        
+        public void start (){
+            isStart = true;
+            System.out.println("Работает " + isStart);
+        }
+         public void shutdown (){
+            isStart = false;
+        }
+         Ram ram = new Ram(); 
+         class Ram {
+        private boolean isStart = false;
+        
+        public void start (){
+            isStart = true;
+        }
+         public void shutdown (){
+            isStart = false;
+         }
+         }
+    }
+}﻿
+Читать дальше
+ОТВЕТИТЬ
+
+
+
+Dmitry Kaltovich
+Dmitry Kaltovich
+3 месяца назад
+Четко. Понял﻿
+ОТВЕТИТЬ
+
+
+
+Ace35725
+Ace35725
+6 месяцев назад
+Мэин
+package com.company;
+
+public class Main {
+    public static void main (String[] args){
+        Car car = new Car();
+        car.doom.start();    // вот это упорно не хочет работать, но почему? Уверен глупая ошибка, но помогите разобраться)
+    }
+
+другой класс
+package com.company;
+
+public class Car {
+    class Engine {
+        private boolean isStart = false;
+        public void start(){
+            isStart=true;
+            System.out.println("isStart "+isStart);
+        }
+        public void off(){
+            isStart=false;
+            System.out.println("isStart "+isStart);
+        }
+        Engine doom = new Engine();
+    }
+}﻿
+Читать дальше
+ОТВЕТИТЬ
+
+
+
+Показать все ответы (2)
+ Crazy Panda
+Crazy Panda
+8 месяцев назад
+Годный урок﻿
+ОТВЕТИТЬ
+
+
+
+Crazy Panda
+Crazy Panda
+8 месяцев назад
+processor*﻿
+ОТВЕТИТЬ
+
+
+
+Акерке Ибрагим
+Акерке Ибрагим
+8 месяцев назад
+И как он комментировал все поля сразу?﻿
+ОТВЕТИТЬ
+
+
+
+Показать ответ
+ Акерке Ибрагим
+Акерке Ибрагим
+8 месяцев назад
+Пожалуйста, подскажите как он увеличил экран?﻿
+ОТВЕТИТЬ
+
+
+
+eluxa2000
+eluxa2000
+10 месяцев назад
+А у команды System.out.println(); Класс out вложен в класс System?﻿
+ОТВЕТИТЬ
+
+
+
+Показать ответ
+ Finn Lipe
+Finn Lipe
+10 месяцев назад
+Я ПЕРВЫЙ﻿
+*/
