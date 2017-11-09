@@ -1,0 +1,23 @@
+
+// For what man knows the things of a man, except the spirit of man which is in him? even so the things of God knows no man, but the Spirit of God. (1Cor 2:11)
+
+https://refactoring.guru/
+
+
+
+/*
+Hello world!
+Refactoring.Guru is a shiny website where you can find tons of information on refactoring, design patterns, SOLID principles and other smart programming topics.
+
+The primary purpose of this site is to show the big picture. I want to demonstrate how all these subjects intersect, how they work together and how they are still relevant.
+
+I don't pretend to be the inventor of these concepts. Most of them were invented by others during the past 20 years. But I think that the connection between refactoring, patterns and general programming principles still remains a mystery for the majority of programmers. And this is the problem I would like to solve here.
+
+P.S. While the project is still a work in progress, you can already find lots of info on refactoring and design patterns. The progress can be tracked on the Facebook or by email.
+
+Alexander Shvets
+The one-man band behind Refactoring.Guru
+Refactoring
+
+Refactoring is a controllable process of improving code without creating new functionality. Refactoring transforms a mess into clean code and simple design.
+*/
