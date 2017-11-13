@@ -1,0 +1,216 @@
+
+//But with me it is a very small thing that I should be judged of you, or of man's judgment: yea, I judge not my own self. (1Cor 4:3)
+
+http://info.javarush.ru/JavaRush_lectures_discussion/2013/10/20/%D0%9B%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-26.html
+
+
+
+
+
+/*
+Уровень 26: план уровня и доп. материалы
+ Обсуждение лекций
+ лекция
+План уровня:
+Comparator, сортировка коллекций
+Разделяемые ресурсы, Конфликты, проблема совместного доступа
+Применение volatile
+Мютекс и монитор
+Применение synchronized
+Concurency, BlockingQueues (java7)
+
+Курс Java
+
+Что еще можно посмотреть на досуге:
+Ответы на вопросы к собеседованию по теме уровня. Часть 1.
+
+Ответы на вопросы к собеседованию по теме уровня. Часть 2.
+
+
+Нашли классную ссылку к материалу данной темы? Добавьте ее сюда в виде комментария.
+Возможно, именно Ваша ссылка поможет другому человеку стать программистом и улучшить свою жизнь!
+
+Вернуться к плану обучения 
+
+Вернуться к обучению java онлайн на JavaRush
+—
+0
+24 комментария 
+ odabc
+odabc 23 сентября 2015, 16:45 0
+В главе 1 в примере написано
+Пример кода, пользователи сортируются по росту:
+на самом деле
+return o1.weight — o2.weight;
+исправьте пожалуйста!
+ ortega89
+ortega89 25 февраля 2016, 01:29 0 ↑ Комментарий отредактирован 2016-02-25 01:30:36 пользователем ortega89
+При сравнении так и задумано. Из первого вычитается второе.
+Результат:
+а) разница < 0 означает, что первое < второго
+б) разница > 0 означает, что первое > второго
+в) разница == 0 означает, что первое и второе могут идти в любом порядке
+ redchush
+redchush 18 декабря 2015, 02:13 0 Комментарий отредактирован 2015-12-18 02:14:14 пользователем redchush
+Ссылка на статью про компараторы из хабра: ;
+Краткий обзор java.concurrency из хабра ;
+Кратко про локи ;
+ Roman_kh
+Roman_kh 5 января 2016, 19:40 0
+post about «happens-before»: link
+ Medniy
+Medniy 9 марта 2016, 13:45 0
+! множко о Канкаренси
+ Byshevsky
+Byshevsky 2 апреля 2016, 14:53 0
+
+В конструкторе параметр age а в компораторе height. Или так и задумано?
+ Shtramak
+Shtramak 18 апреля 2016, 18:39 0 ↑ Комментарий отредактирован 2016-04-18 18:43:17 пользователем Shtramak
+По ходу даже компилятор не осмелился сортировать женщин по возрасту… ))) Видимо выдавал нечто на подобии «It's a crime to sort Woman by age», вот и пошли на хитрость :)
+ Alejandro_Kolio
+Alejandro_Kolio 25 июля 2016, 23:06 -1 ↑
+SortWomanByAgeException
+ deft
+deft 7 июня 2016, 11:45 0 ↑
+Посмотрите на все поля класса Womаn. Мы пишем компаратор для сравнения по росту. И в строке Collection.sort(...) мы сортируем Womаn по росту. Можем написать компаратор для любого поля или нескольких полей.
+ Byshevsky
+Byshevsky 7 июня 2016, 16:26 0 ↑
+В квадратике «пример использования» кусок программы в которой перед инициализацией компаратора добавляются три объекта вумен, при создании которых заполняется поле age. Как прикажете компаратору сортировать объекты по полю height если оно у всех имеющихся объектов null?
+ ferasinka
+ferasinka 4 августа 2016, 22:07 0 ↑
+Не null, a 0 ;-)
+ Byshevsky
+Byshevsky 4 августа 2016, 22:35 +1 ↑
+по нулю тоже сильно не отсортируешь. Вот скажи, я же прав что там ошибка?
+ ferasinka
+ferasinka 5 августа 2016, 00:35 +1 ↑
+По факту — да, нужно исправить.
+ Joysi
+Joysi 9 июня 2016, 17:56 +1
+Не сразу смог въехать в чем и за счет чего преимущество атомарных типов по сравнению с synchronized. Вот чутка глубже (Чем дается в лекции) копнул.
+
+Для работы с общими данными в thread-ах расмотрим «сферический» потокобезопасный int с двумя операциями на нем ++ и --:
+
+public class SynchronizedCounter { 
+   private int c = 0; 
+   public synchronized void increment() { c++; } 
+   public synchronized void decrement() { c--; } 
+   public synchronized int value() { return c; } 
+ }
+
+У такого метода есть важный недостаток — скорость работы. Так как много времени уйдет на дополнительные сервисные действия при входе в синхронизированные методы (или внутрь synchronized блока, что в ряде случаев хуже):
+1. попытка блокирования монитора
+2. блокировка потока
+3. разблокировка монитора
+4. разблокировка потока
+В процессорах начиная с конца прошлого века (в связи с широким распространением многопроцессорности и позже многоядерности) появилась реализация инструкций из серии Compare And Save (CAS). Смысл:
+Шаг 1. Читаем значение равное А по адресу V 
+Шаг 2. Вычисления, в процессе которых получили из A новое значение B
+Шаг 3. CAS заменит по адресу V на новое значение B, если только непосредственно в момент замены там было А. (вот это самый ключевой момент!)
+И выставит флаг состояния, если такую замену совершил.
+
+То есть ненадо ничего блокировать, процессор сделает за вас и просто не даст записать новое значение, если старое было модернизировано не вашей задачей.
+Процесс в курсе, что используемая в вычислениях стартовое значение переменной «протухло» и сам решит перестартовать новое вычисление или прервать вычисление.
+Атомарные переменные можно рассматривать как продвинутые volatile примитивы у которых появился CAS. 
+Выгода 1) Отсутствие необходимости блокировок (synchronized) в следствие наличия реализации CAS.
+Выгода 2) Чем меньше размер synchronized объекта, тем меньше шанс появление конфликта доступа к нему. Вывод части данных из таких synchronized блоков и перевод их в атомарный вид уменьшает число операций в «зоне конфликта», что благоприятно скажется на производительности.
+
+Ну и подкрепим практикой:
+Сравним атомарный и synchronized способ доступа (Пример для JDK8):
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class testConcur {
+    public static void main(String[] args) {
+        final int limitCnt = 200000000; // Пороговое значение
+        SynchronizedCounter counter1 = new SynchronizedCounter(); // тестируемый образец 1
+        AtomicInteger counter2 = new AtomicInteger(1);  // тестируемый образец 2
+        long startTime = System.currentTimeMillis();    // Время начала
+
+        Runnable myTaskIncSynchr = () -> {
+            for (int i = 0; i < limitCnt; i++) counter1.increment();
+            System.out.println("stop synchr inc, time=" + (System.currentTimeMillis() - startTime) + " ms." );
+        };
+
+        Runnable myTaskDecSynchr = () -> {
+            for (int i = 0; i < limitCnt; i++) counter1.decrement();
+            System.out.println("stop synchr dec, time=" + (System.currentTimeMillis() - startTime) + " ms." );
+        };
+
+        Runnable myTaskIncAtomic = () -> {
+            for (int i = 0; i < limitCnt; i++) counter2.getAndIncrement();
+            System.out.println("stop atomic inc, time=" + (System.currentTimeMillis() - startTime) + " ms." );
+        };
+
+        Runnable myTaskDecAtomic = () -> {
+            for (int i = 0; i < limitCnt; i++) counter2.getAndDecrement();
+            System.out.println("stop atomic dec, time=" + (System.currentTimeMillis() - startTime) + " ms." );
+        };
+
+        new Thread(myTaskIncSynchr).start();
+        new Thread(myTaskDecSynchr).start();
+        new Thread(myTaskIncAtomic).start();
+        new Thread(myTaskDecAtomic).start();
+    }
+}
+
+class SynchronizedCounter {
+    private int c = 0;
+    synchronized void increment() { c++; }
+    synchronized void decrement() { c--; }
+    synchronized int value() { return c; }
+}
+
+
+Вывод
+stop atomic dec, time=3380 ms.
+stop atomic inc, time=3380 ms.
+stop synchr dec, time=13820 ms.
+stop synchr inc, time=14231 ms.
+Вторая особенность, как Вы можете заметить — синхронность и предсказуемость временных затрат на однотипные вычисления 
+(сравните с synhronized)
+ IgorBrest
+IgorBrest 10 июня 2016, 09:20 0 ↑
+познавательно
+ Tigran
+Tigran 26 июля 2016, 11:01 +2 ↑
+Нифига себе, минилекция в комментарии! Спасибо!
+ kirjust
+kirjust 20 сентября 2016, 22:47 0 ↑ Комментарий отредактирован 2016-09-20 22:48:51 пользователем kirjust
+честно переписал, провел эксперимент. У меня на машине результаты:
+stop atomic dec, time=18470
+stop atomic inc, time=18470
+stop syncr inc, time=42106
+stop syncr inc, time=42122
+
+Что это за зверь такой стоит, что в 3 раза быстрее моей работает? Думал мой камушек еще неплох… AMD-4350, 4.2GHz
+и да, в начале поставил модификатор final перед 
+<code>final SynchronizedCounter  counter1 = new SynchronizedCounter();
+        final AtomicInteger counter2 = new AtomicInteger(1);
+        final long startTime = System.currentTimeMillis();</code>
+без этого, компилятор ругался и не хотел запускать. Оформил так же, анонимными вложенными классами.
+ Enigma
+Enigma 16 октября 2016, 21:52 0 ↑
+В Java 8 теперь не обязательно указывать «final» перед переменными, которые будут использоваться в анонимных классах, но если потом в коде попытаешься изменить ту переменную, то компилятор выдаст ошибку.
+ Joysi
+Joysi 17 октября 2016, 13:06 0 ↑ Комментарий отредактирован 2016-10-17 13:07:13 пользователем Joysi
+Простите, что поздно ответил(в отпуске был): intel i7-2600 + (возможно важно, на тот момент была установлена память с неплохими характеристиками 8Gb RAM 8-8-8-24).
+
+P.S. Oracle JDK 1.8.073
+P.S.2 Использование Atomic в разы выгоднее — что более важно.
+ riko
+riko 21 октября 2016, 12:16 0 ↑
+на древнем AMD Phenom II X4 955 @ 3.5 GHz:
+stop atomic dec, time=9239 ms.
+stop atomic inc, time=9239 ms.
+stop synchr inc, time=21540 ms.
+stop synchr dec, time=21744 ms.
+ kirjust
+kirjust 20 сентября 2016, 22:23 +1
+очень крутая (по мне) визуализация реализации многопоточности
+sourceforge.net/projects/javaconcurrenta/
+ lexmirnov
+lexmirnov 30 октября 2017, 10:37 0
+Указания по использованию volatile-переменных
+
+*/
