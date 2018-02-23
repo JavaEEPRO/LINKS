@@ -1,0 +1,21 @@
+#For IntelliJ IDEA 2017.1.2 EAP on Windows 10, I had to:
+
+# включить отображение скрытых файлов/директорий;
+# скорее всего, в папке "мои документы" (если там нету, искать через поиск) найти нужно папку .IntellijIdea2017.1 (по умолчанию скрытая)
+# нужна вложенная в нее папка config 
+# удалить вложенную в .IntellijIdea2017.1/config папку eval
+# зайти в папку options (.IntellijIdea2017.1/config/options/)
+# редактировать options.xml
+# удалить все свойства, название которых начинается с evlsprt
+# "Пуск" -> Выполнить
+# ввести в окне ввода regedit
+# папка HKEY_CURRENT_USER
+# папка Software
+# папка JavaSoft
+# папка Prefs
+# папка jetbarins
+# папка idea, здесь нужно зайти в каждую подпапку (четыре штуки, начинаются с цифры) 
+# в каждой подпапке удалить ключ, имя которого начинается с evlsprt
+# запустить Intellij
+
+´~/.IntelliJIdea2017.1/config´ #Remove the folder ´eval´ #Edit file options/options.xml and remove all properties that the name begins with evlsprt, such as: # #Go to Windows Registry and under subkeys of HKCU\Software\JavaSoft\Prefs\jetbrains\idea delete keys that begin with evlsprt
