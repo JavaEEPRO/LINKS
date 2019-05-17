@@ -1,0 +1,4 @@
+
+add simple parameters set to DB link:
+
+              ?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
